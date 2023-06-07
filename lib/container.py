@@ -14,22 +14,26 @@ class Container():
     def __init__(self, registry: List[ContainerEntry]):
         self._registry = registry
 
-    def resolve(self, member_types: Type[T]) -> T:
+    def resolve(self, member_type: Type[T]) -> T:
         for entry in self._registry:
-            if isinstance(entry.cls, member_types):
+            if entry.cls is member_type:
                 if entry.scope == Scope.SINGLETON:
                     if not entry.instance:
                         entry.instance = self._create_instance(entry.cls)
                     return entry.instance
                 else:  # Scope.TRANSIENT
                     return self._create_instance(entry.cls)
-        raise ValueError(f"No member of type {member_types} registered")
+        raise ValueError(f"No member of type {member_type} registered")
 
     def _create_instance(self, component: type) -> object:
         params = inspect.signature(component).parameters
         if not params:
             return component()
-        dependencies = {name: self.resolve(param.annotation) for name, param in params.items()}
+        dependencies = {
+            name: self.resolve(param.annotation)
+            for name, param in params.items()
+            if param.annotation != inspect._empty
+        }
         return component(**dependencies)
 
     # member_entry = next((x for x in self._registry if x.cls == member_types), None)
