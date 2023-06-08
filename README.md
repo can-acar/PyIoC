@@ -29,7 +29,7 @@ The project includes the following structures:
 - `Module`: An abstract class used to facilitate dependency injection.
 -----------------------------------------------------------------
 
-
+- Interoperable with Flask Framework
 
 ```python
 from typing import List
