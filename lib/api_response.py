@@ -19,7 +19,7 @@ class ApiResponse:
         self.message = message
 
     def __str__(self):
-        return f"AuthResponse(data={self.data}, message={self.message}, status={self.status})"
+        return f"ApiResponse(data={self.data}, message={self.message}, status={self.status})"
 
     def to_dict(self):
         return {

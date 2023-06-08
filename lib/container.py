@@ -1,4 +1,5 @@
 import inspect
+from typing import Generic
 from typing import List
 from typing import Type
 from typing import TypeVar
@@ -14,12 +15,19 @@ class Container():
     def __init__(self, registry: List[ContainerEntry]):
         self._registry = registry
 
-    def resolve(self, member_type: Type[T]) -> T:
+    def resolve(self, member_type: Generic[T]) -> T:
         for entry in self._registry:
-            if entry.cls is member_type:
+            if entry.cls is member_type or isinstance(entry.cls, member_type) or isinstance(entry.instance, member_type):
                 if entry.scope == Scope.SINGLETON:
                     if not entry.instance:
                         entry.instance = self._create_instance(entry.cls)
+                        return entry.instance
+                    if entry.instance:
+                        return entry.instance
+                if entry.scope == Scope.REQUEST:
+                    if not entry.instance:
+                        entry.instance = self._create_instance(entry.cls)
+                        return entry.instance
                     return entry.instance
                 else:  # Scope.TRANSIENT
                     return self._create_instance(entry.cls)
@@ -32,32 +40,6 @@ class Container():
         dependencies = {
             name: self.resolve(param.annotation)
             for name, param in params.items()
-            if param.annotation != inspect._empty
+            if param.annotation != inspect.Parameter.empty
         }
         return component(**dependencies)
-
-    # member_entry = next((x for x in self._registry if x.cls == member_types), None)
-    # if not member_entry:
-    #     raise ValueError(f"Member of type {member_entry} not registered")
-    # if member_entry.scope == Scope.SINGLETON:
-    #     if not member_entry.instance:
-    #         member_entry.instance = self._create_instance(member_entry.cls)
-    #     return member_entry.instance
-
-    # member_entry = self._registry.get(member_types)
-    # if not member_entry:
-    #     raise ValueError(f"Member of type {member_entry} not registered")
-    # if member_entry["scope"] == Scope.SINGLETON:
-    #     if member_entry not in self._registry:
-    #         self._registry[member_entry] = self._create_instance(member_entry["cls"])
-    #     return self._registry[member_entry]
-    # else:  # Scope.TRANSIENT
-    #     return self._create_instance(member_entry["cls"])
-
-    # params = inspect.signature(component).parameters
-    # if not params:
-    #     return component()
-    # dependencies = {param: self.resolve(param.annotation) for param, param in params.items()}
-    # return component(**dependencies)
-
-    # get static instance of container_builder

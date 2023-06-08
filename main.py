@@ -9,15 +9,17 @@ from validate import validate
 
 @resolve(ExampleClass, Example3)
 def example_function(example: ExampleClass, request: Example3):
-    temp = request;
+    test_key = request.test_key
+    test_value = request.test_value
     return example.hello()
 
 
 if __name__ == '__main__':
     builder = ContainerBuilder()
-    builder.register(SampleClass, scope=Scope.TRANSIENT)
-    builder.register(ExampleClass, scope=Scope.SINGLETON)
+    sampleInstance = SampleClass()
+    builder.register_instance(sampleInstance)
     builder.register(Example3, scope=Scope.REQUEST)
+    builder.register(ExampleClass, scope=Scope.TRANSIENT)
 
     container = builder.build()
 
