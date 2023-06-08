@@ -2,7 +2,7 @@
  
 IoC library for Python, similar to C# Autfac
 
-C# Autfac benzeri, Python için IoC kütüphanesi
+C# Autofac benzeri, Python için IoC kütüphanesi
 
 ## Yapılar
 
