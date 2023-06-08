@@ -15,9 +15,32 @@ Proje aşağıdaki yapıları içermektedir:
 - `Scope`: Bağımlılıkların kapsamını belirten bir sıralı veri tipi.
 - `Module`: Bağımlılık enjeksiyonunu kolaylaştırmak için kullanılan soyut bir sınıf.
 
-## Örnek Kodlar
 
-### Bağımlılık Enjeksiyonu Kullanarak Sınıf Oluşturma
+
+
+EN
+The project includes the following structures:
+
+- `ContainerBuilder`: A class used for registering and resolving dependencies.
+- `Container`: A class that provides dependency resolution and holds the registrations.
+- `inject` and `resolve` decorators: Decorators that enable automatic injection of dependencies.
+- `ContainerEntry`: A class that represents a dependency registration.
+- `Scope`: An enumeration that specifies the scope of dependency registrations.
+- `Module`: An abstract class used to facilitate dependency injection.
+-----------------------------------------------------------------
+
+
+
+```python
+from typing import List
+from typing import TypeVar
+
+from container_entry import ContainerEntry
+from lib.container import Container
+from lib.scope import Scope
+from singleton import Singleton
+
+
 ```python
 from typing import List
 from typing import TypeVar
