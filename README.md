@@ -1,6 +1,6 @@
 # PyIoC
  
-IoC library for Python, similar to C# Autfac
+IoC library for Python, similar to C# Autofac
 
 C# Autofac benzeri, Python için IoC kütüphanesi
 
