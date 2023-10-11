@@ -18,6 +18,8 @@ class ContainerBuilder(metaclass=Singleton):
     def build(self) -> Container:
         container = Container(self._registry)
         ContainerBuilder._container = container
+        self.register_instance(container, Scope.SINGLETON)
+        self.register_instance(self, Scope.SINGLETON)
         return ContainerBuilder._container
 
     def register(self, component=None, scope=Scope.TRANSIENT) -> 'ContainerBuilder':

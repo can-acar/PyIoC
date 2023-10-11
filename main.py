@@ -4,7 +4,6 @@ from example_class import ExampleClass
 from resolve import resolve
 from sample_class import SampleClass
 from scope import Scope
-from validate import validate
 
 
 @resolve(ExampleClass, Example3)
@@ -17,7 +16,7 @@ def example_function(example: ExampleClass, request: Example3):
 if __name__ == '__main__':
     builder = ContainerBuilder()
     sampleInstance = SampleClass()
-    builder.register_instance(sampleInstance)
+    builder.register_instance(sampleInstance,scope=Scope.SINGLETON)
     builder.register(Example3, scope=Scope.REQUEST)
     builder.register(ExampleClass, scope=Scope.TRANSIENT)
 

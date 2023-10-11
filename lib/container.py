@@ -1,5 +1,4 @@
 import inspect
-from typing import Generic
 from typing import List
 from typing import Type
 from typing import TypeVar
@@ -15,9 +14,10 @@ class Container():
     def __init__(self, registry: List[ContainerEntry]):
         self._registry = registry
 
-    def resolve(self, member_type: Generic[T]) -> T:
+    def resolve(self, member_type: Type[T]) -> T:
         for entry in self._registry:
-            if entry.cls is member_type or isinstance(entry.cls, member_type) or isinstance(entry.instance, member_type):
+            if entry.cls is member_type or isinstance(entry.cls, member_type) or isinstance(entry.instance,
+                                                                                            member_type):
                 if entry.scope == Scope.SINGLETON:
                     if not entry.instance:
                         entry.instance = self._create_instance(entry.cls)
